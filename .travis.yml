@@ -16,6 +16,7 @@ before_install:
   - docker info
 script:
   - docker buildx create --use --name armv7builder
+  - docker buildx inspect --bootstrap armv7builder
   - docker buildx build --platform linux/arm/v7,linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
 after_success:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
