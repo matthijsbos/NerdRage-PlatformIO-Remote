@@ -15,6 +15,15 @@ before_install:
   - sudo apt-get install qemu binfmt-support qemu-user-static
   - docker version
   - docker info
+# https://github.com/riotkit-org/ci-utils
+before_script:
+  # dependencies
+  - pip install j2cli requests
+  - wget https://github.com/riotkit-org/ci-utils/archive/master.zip -O /tmp/ci-utils.zip  # change master to a release tag only here (version)
+  - curl "https://raw.githubusercontent.com/riotkit-org/ci-utils/master/ci-integration/travis.sh" -s | bash
+
+  # activate ARM builds on travis
+  - /opt/riotkit/utils/bin/setup-travis-arm-builds
 script:
   # register QEMU in the build agent according to 
   # https://blog.hypriot.com/post/setup-simple-ci-pipeline-for-arm-images/
