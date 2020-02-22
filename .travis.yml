@@ -30,7 +30,7 @@ script:
   # https://blog.hypriot.com/post/setup-simple-ci-pipeline-for-arm-images/
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   # Create builder
-  - docker buildx create --use --name builder
+  - docker buildx create --use --name builder --platform linux/arm/v7,linux/amd64
   # Inspect and ensure builder is running using --bootstrap
   - docker buildx inspect --bootstrap builder
   # Build images
