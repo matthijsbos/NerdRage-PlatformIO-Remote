@@ -9,6 +9,7 @@ services:
   - docker
 before_install:
   # Install latest docker
+  
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
@@ -16,25 +17,20 @@ before_install:
   - sudo apt-get install qemu binfmt-support qemu-user-static
   - docker version
   - docker info
-# https://github.com/riotkit-org/ci-utils
-before_script:
-  # dependencies
-  - sudo pip install j2cli requests
-  - wget https://github.com/riotkit-org/ci-utils/archive/master.zip -O /tmp/ci-utils.zip  # change master to a release tag only here (version)
-  - curl "https://raw.githubusercontent.com/riotkit-org/ci-utils/master/ci-integration/travis.sh" -s | bash
-
-  # activate ARM builds on travis
-  - /opt/riotkit/utils/bin/setup-travis-arm-builds
+  - echo '{"experimental":"enabled"}' | sudo tee /etc/docker/daemon.json
+  - mkdir -p $HOME/.docker
+  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
+  - sudo service docker restart  
 script:
   # register QEMU in the build agent according to 
   # https://blog.hypriot.com/post/setup-simple-ci-pipeline-for-arm-images/
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
   # Create builder
-  - docker buildx create --use --name builder --platform linux/arm/v7,linux/amd64
+  - docker buildx create --name builder --platform linux/arm/v7,linux/amd64 --use
   # Inspect and ensure builder is running using --bootstrap
   - docker buildx inspect --bootstrap builder
   # Build images
-  - docker buildx build --platform linux/arm/v7,linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
+  - docker buildx build --progress plain --platform linux/arm/v7,linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
 after_success:
   # Logina and publish on docker hub
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
