@@ -24,13 +24,13 @@ before_install:
 script:
   # register QEMU in the build agent according to 
   # https://blog.hypriot.com/post/setup-simple-ci-pipeline-for-arm-images/
-  - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   # Create builder
   - docker buildx create --name builder --platform linux/arm/v7,linux/amd64 --use
   # Inspect and ensure builder is running using --bootstrap
   - docker buildx inspect --bootstrap builder
   # Build images
-  - docker buildx build --progress plain --platform linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
+  - docker buildx build --load --progress plain --platform linux/arm/v7,linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
 after_success:
   # Logina and publish on docker hub
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
