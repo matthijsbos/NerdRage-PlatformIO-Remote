@@ -30,7 +30,7 @@ script:
   # Inspect and ensure builder is running using --bootstrap
   - docker buildx inspect --bootstrap builder
   # Build images
-  - docker buildx build --progress plain --platform linux/arm/v7,linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
+  - docker buildx build --progress plain --platform linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
 after_success:
   # Logina and publish on docker hub
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
