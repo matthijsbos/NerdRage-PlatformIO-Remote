@@ -3,8 +3,8 @@ language: generic
 dist: bionic
 sudo: required 
 env:
-  DOCKER_CLI_EXPERIMENTAL: enabled
-  DOCKER_BUILDKIT: 1
+  "DOCKER_CLI_EXPERIMENTAL": "enabled"
+  "DOCKER_BUILDKIT": "1"
 services:
   - docker
 install:
@@ -15,9 +15,10 @@ install:
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   - docker version
   - docker info
-  # install qemu binaries
+  # install qemu binaries\
   - sudo apt-get install qemu binfmt-support qemu-user-static
-script:
+
+before_script:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   # register QEMU in the build agent according to 
   # https://medium.com/@quentin.mcgaw/cross-architecture-docker-builds-with-travis-ci-arm-s390x-etc-8f754e20aaef
@@ -27,4 +28,13 @@ script:
   # Inspect and ensure builder is running using --bootstrap
   - docker buildx inspect --bootstrap builder
   # Build images for multiple platforms using buildx
-  - docker buildx build --push --progress plain --platform linux/arm/v7,linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
+
+jobs:
+  include:
+    - stage: build
+      script:
+        - docker buildx build --progress plain --platform linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest .
+    - stage: build
+      script:
+        - docker buildx build --progress plain --platform linux/arm/v7 -t matthijsbos/nerdrage-platformio-remote:latest .
+    
