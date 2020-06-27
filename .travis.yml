@@ -39,17 +39,17 @@ jobs:
     - name: build platform linux/amd64
       stage: build
       script:
-        - docker buildx build --push --progress plain --platform linux/amd64 -t matthijsbos/nerdrage-platformio-remote:test-amd64 .
+        - docker buildx build --push --progress plain --platform linux/amd64 -t matthijsbos/nerdrage-platformio-remote:latest-amd64 .
     - name: build platform linux/arm/v7
       stage: build
       script:
-        - docker buildx build --push --progress plain --platform linux/arm/v7 -t matthijsbos/nerdrage-platformio-remote:test-armv7 .
+        - docker buildx build --push --progress plain --platform linux/arm/v7 -t matthijsbos/nerdrage-platformio-remote:latest-armv7 .
     - name: create manifest for multi platform image
       stage: manifest
       script: 
-        - docker pull matthijsbos/nerdrage-platformio-remote:test-amd64
-        - docker pull matthijsbos/nerdrage-platformio-remote:test-armv7
-        - docker manifest create matthijsbos/nerdrage-platformio-remote:test matthijsbos/nerdrage-platformio-remote:test-amd64 matthijsbos/nerdrage-platformio-remote:test-armv7
-        - docker manifest push matthijsbos/nerdrage-platformio-remote:test
+        - docker pull matthijsbos/nerdrage-platformio-remote:latest-amd64
+        - docker pull matthijsbos/nerdrage-platformio-remote:latest-armv7
+        - docker manifest create matthijsbos/nerdrage-platformio-remote:latest matthijsbos/nerdrage-platformio-remote:latest-amd64 matthijsbos/nerdrage-platformio-remote:latest-armv7
+        - docker manifest push matthijsbos/nerdrage-platformio-remote:latest
     
     
