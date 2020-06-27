@@ -6,8 +6,8 @@ RUN apt-get update \
          build-essential \
          libssl-dev \
          libffi-dev \
-         python-dev \
-         openssl-dev \
+         python3-dev \
+      #    openssl-dev \
    # Clean up
    && apt-get autoremove -y \
    && apt-get clean -y \
