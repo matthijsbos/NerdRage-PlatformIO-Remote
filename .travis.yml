@@ -47,8 +47,8 @@ jobs:
     - name: create manifest for multi platform image
       stage: manifest
       script: 
-        - docker manifest create matthijsbos/nerdrage-platformio-remote:test binaries \
-              matthijsbos/nerdrage-platformio-remote:test-amd64 \
+        - docker manifest create matthijsbos/nerdrage-platformio-remote:test binaries 
+              matthijsbos/nerdrage-platformio-remote:test-amd64
               matthijsbos/nerdrage-platformio-remote:test-armv7
         - docker manifest push matthijsbos/nerdrage-platformio-remote:test
     
