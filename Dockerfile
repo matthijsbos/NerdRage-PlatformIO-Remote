@@ -14,3 +14,8 @@ RUN apt-get update \
    && rm -rf /var/lib/apt/lists/*
 RUN pip3 install -U platformio pyOpenSSL 
 ENV DEBIAN_FRONTEND=dialog
+
+COPY ./script.sh /
+RUN chmod +x /script.sh
+ENTRYPOINT [ "/bin/bash", "-v"]
+CMD ["/script.sh"]
