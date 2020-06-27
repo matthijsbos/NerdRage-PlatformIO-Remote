@@ -1,4 +1,2 @@
-FROM debian:buster
-RUN apt-get update
-RUN apt-get install -y python3 python3-pip
+FROM matthijsbos/nerdrage-base
 RUN pip3 install -U platformio
